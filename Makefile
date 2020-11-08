@@ -12,4 +12,4 @@ mcSim: mcSim.o
 	$(CC) $(CFLAGS) mcSim.o -o runSim 
 
 clean:
-	rm runSim
+	rm runSim *.o
