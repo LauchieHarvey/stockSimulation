@@ -12,12 +12,13 @@ double generate_normal_dist_num(double min, double max, double mean) {
 
     // Random number between the max and the min
     double randNum = ((double)rand() / RAND_MAX * (max - min)) + min;
-    double randScaleFactor = (double)rand() / RAND_MAX * M_PI;
 
-    // Reduce the likelihood of extreme values
-    randNum *= (sin(20 * randScaleFactor) / 2) + 0.5;
+    // Multiply randNum by scale factor (between 0 & 1) to reduce the
+    // likelihood of extreme values. Slightly skewed towards 0. (2x - 1)^2
+    double randNum2 = (double)rand() / RAND_MAX;
+    double scaleFactor = (2 * randNum2 - 1) * (2 * randNum2 - 1);
 	
-    return randNum; 
+    return randNum * scaleFactor; 
 }
 
 // Pseudo randomly generate the stock price for the specified day.
