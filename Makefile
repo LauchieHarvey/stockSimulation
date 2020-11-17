@@ -1,15 +1,16 @@
 CC = gcc
 CFLAGS = -Wall -pedantic -std=gnu99
-.PHONY = clean
+LINKS = -lm
+.PHONY = clean all
 .DEFAULT_OPTION = all 
 
 all: mcSim 
 
-mcSim.o: mcSim.c
-	$(CC) $(CFLAGS) mcSim.c -c 
+mcSim.o: mcSim.c mcSim.h
+	$(CC) $(CFLAGS) mcSim.c -c
 
 mcSim: mcSim.o
-	$(CC) $(CFLAGS) mcSim.o -o runSim 
+	$(CC) $(CFLAGS) mcSim.o -o runSim $(LINKS)
 
 clean:
-	rm runSim *.o
+	rm runSim *.o 

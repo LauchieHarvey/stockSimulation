@@ -2,8 +2,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
+#include <sys/time.h>
 #include "mcSim.h"
 
+// Generates pseudo random int between the specified bounds based of a 
+// normal distribution around the mode argument.
+double generate_normal_dist_num(double min, double max, double mean) {
+
+    // Random number between the max and the min
+    double randNum = ((double)rand() / RAND_MAX * (max - min)) + min;
+    double randScaleFactor = (double)rand() / RAND_MAX * M_PI;
+
+    // Reduce the likelihood of extreme values
+    randNum *= (sin(20 * randScaleFactor) / 2) + 0.5;
+	
+    return randNum; 
+}
+
+// Pseudo randomly generate the stock price for the specified day.
 void calculate_next_price(Stock* stock, double dpMonth, int dayNum) {
 
     stock->prices = realloc(stock->prices, sizeof(double) * (dayNum + 1));
@@ -18,15 +35,16 @@ void calculate_next_price(Stock* stock, double dpMonth, int dayNum) {
 
 // Returns the change in the stock price over the specified num of days.
 double get_price_change(Stock stock, int currDayNum, int numOfDays) {
-    int monthAgoIndex = (currDayNum - numOfDays) > 0 ? 
-	(currDayNum - numOfDays) : 0;
+
+    int trailingDayNum = currDayNum - numOfDays;
+    int monthAgoIndex = trailingDayNum > 0 ? trailingDayNum : 0;
 
     return stock.prices[currDayNum - 1] - stock.prices[monthAgoIndex];
 }
 
 // Runs the simulation of the stock for the specified number of months.
 void simulate_stock_price(Stock* stock, int numOfMonths) {
-    int numOfDays = round(numOfMonths * 365/12);  
+    int numOfDays = numOfMonths * 365 / 12;  
 
     int startingStockPrice = 100;
     stock->prices = malloc(sizeof(double));
@@ -45,6 +63,14 @@ int main(int argc, char** argv) {
 	exit(1);
     }
     Stock stock;
-    simulate_stock_price(&stock, 1);
+    srand(time(NULL));
+    // Simulate the stock price over time (months)
+    //simulate_stock_price(&stock, 1);
+    // Simulate how a certain strategy would have performed on this stock.
+    for (int i = 0; i < 6; i++) {
+        double rndNum = generate_normal_dist_num(-5, 5, 1);
+	printf("Normal: %f\n", rndNum);
+    }
+
     return 0;
 }
