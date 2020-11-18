@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-#include <sys/time.h>
 #include "mcSim.h"
 
 // Generates pseudo random int between the specified bounds skewed towards lower
@@ -14,9 +13,10 @@ double generate_rand_num(double min, double max) {
     double randNum = ((double)rand() / RAND_MAX * (max - min)) + min;
 
     // Multiply randNum by scale factor (between 0 & 1) to reduce the
-    // likelihood of extreme values. (2x - 1)^2
+    // likelihood of extreme values.
     double randNum2 = (double)rand() / RAND_MAX;
-    double scaleFactor = (2 * randNum2 - 1) * (2 * randNum2 - 1);
+    // y = (2x - 1)^4
+    double scaleFactor = pow((2 * randNum2 - 1), 4);
 	
     return randNum * scaleFactor; 
 }
