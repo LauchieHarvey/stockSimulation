@@ -6,15 +6,15 @@
 #include <sys/time.h>
 #include "mcSim.h"
 
-// Generates pseudo random int between the specified bounds based of a 
-// normal distribution around the mode argument.
-double generate_normal_dist_num(double min, double max, double mean) {
+// Generates pseudo random int between the specified bounds skewed towards lower
+// numbers to reduce volatility
+double generate_rand_num(double min, double max) {
 
     // Random number between the max and the min
     double randNum = ((double)rand() / RAND_MAX * (max - min)) + min;
 
     // Multiply randNum by scale factor (between 0 & 1) to reduce the
-    // likelihood of extreme values. Slightly skewed towards 0. (2x - 1)^2
+    // likelihood of extreme values. (2x - 1)^2
     double randNum2 = (double)rand() / RAND_MAX;
     double scaleFactor = (2 * randNum2 - 1) * (2 * randNum2 - 1);
 	
@@ -25,10 +25,11 @@ double generate_normal_dist_num(double min, double max, double mean) {
 void calculate_next_price(Stock* stock, double dpMonth, int dayNum) {
 
     stock->prices = realloc(stock->prices, sizeof(double) * (dayNum + 1));
-    // random number between 1.1 & 0.93
-    double randomNum = 1 + ((rand() % 18) - 7) / (double)100;
-    double newPriceMultiple = randomNum + 0.1 * 
-	(dpMonth / stock->prices[dayNum - 1]);
+    // random number between 8 & -8 with avg of 8% per year
+    double randomPercentChange = generate_rand_num(-8, 8);
+    // New price multiple is random plus the average daily change over the last month
+    double newPriceMultiple = 1 + (randomPercentChange + 
+	(dpMonth / stock->prices[dayNum - 1]) / 1000.0) / 100;
 
     stock->prices[dayNum] = stock->prices[dayNum - 1] * newPriceMultiple;
     printf("Day %i: %f\n", dayNum, stock->prices[dayNum]);
@@ -68,10 +69,7 @@ int main(int argc, char** argv) {
     // Simulate the stock price over time (months)
     //simulate_stock_price(&stock, 1);
     // Simulate how a certain strategy would have performed on this stock.
-    for (int i = 0; i < 6; i++) {
-        double rndNum = generate_normal_dist_num(-5, 5, 1);
-	printf("Normal: %f\n", rndNum);
-    }
+    simulate_stock_price(&stock, 1); 
 
     return 0;
 }
