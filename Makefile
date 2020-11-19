@@ -4,13 +4,17 @@ LINKS = -lm
 .PHONY = clean all
 .DEFAULT_OPTION = all 
 
-all: mcSim 
+all: main
 
-mcSim.o: mcSim.c mcSim.h
-	$(CC) $(CFLAGS) mcSim.c -c
+main.o: main.c main.h
+	$(CC) $(CFLAGS) main.c -c
 
-mcSim: mcSim.o
-	$(CC) $(CFLAGS) mcSim.o -o runSim $(LINKS)
+account.o: account.c account.h
+	$(CC) $(CFLAGS) account.c -c
+
+
+main: main.o account.o
+	$(CC) $(CFLAGS) main.o account.o -o runSim $(LINKS)
 
 clean:
 	rm runSim *.o 

@@ -1,5 +1,5 @@
-#ifndef MC_SIM_H
-#define MC_SIM_H
+#ifndef __MAIN_H__
+#define __MAIN_H__
 
 typedef struct Stock {
     // An array of daily stock prices.

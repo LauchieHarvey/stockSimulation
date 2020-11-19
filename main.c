@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-#include "mcSim.h"
+#include "main.h"
 
 // Generates pseudo random int between the specified bounds skewed towards lower
 // numbers to reduce volatility
