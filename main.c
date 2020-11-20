@@ -59,17 +59,43 @@ void simulate_stock_price(Stock* stock, int numOfMonths) {
     }
 }
 
-int main(int argc, char** argv) {
-    if (argc != 3) {
-	fprintf(stderr, "Usage: ./stockAnalysis numOfMonths volitilityFactor\n");
-	exit(1);
-    }
+// Runs the simulation of the stock and handles all of the accounts.
+// Will run in its own thread eventually.
+void* run_simulation(Args args) {
     Stock stock;
+    simulate_stock_price(&stock, 1);
+
+    return (void*)(0);
+}
+
+// Error that handles incorrect usage of the programme.
+void usage_err() {
+    fprintf(stderr, "Usage: ./runSim strategy numMonths initialStockPrice\n");
+    fprintf(stderr, "strategy:\n    0 = buy and hold\n    1 = dollar cost avg\n");
+    fprintf(stderr, "numMonths: int > 0\n");
+    fprintf(stderr, "initialStockPrice: double > 0\n");
+    exit(1);
+}
+
+// Exits with appropriate error message if there is invalid command line args.
+void parse_args(Args* args, int argc, char** argv) {
+    if (argc != 4) {
+	usage_err();
+    }
+    // Convert argv[1] to StrategyFn and store in args->strategyFn
+    // Convert argv[2] to int and store in args->numMonths
+    // Convert argv[3] to double and store in args->initialStockPrice
+
+}
+
+int main(int argc, char** argv) {
+
+    // Set pseudo-random seed
     srand(time(NULL));
-    // Simulate the stock price over time (months)
-    //simulate_stock_price(&stock, 1);
-    // Simulate how a certain strategy would have performed on this stock.
-    simulate_stock_price(&stock, 1); 
+
+    Args args;
+    parse_args(&args, argc, argv);
+    run_simulation(args);
 
     return 0;
 }

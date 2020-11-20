@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "account.h"
+#include "main.h"
 
 // Instantiate a new account.
 void new_account(Account* account, int initialNumStocks,

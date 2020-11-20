@@ -9,7 +9,7 @@ all: main
 main.o: main.c main.h
 	$(CC) $(CFLAGS) main.c -c
 
-account.o: account.c account.h
+account.o: account.c
 	$(CC) $(CFLAGS) account.c -c
 
 
