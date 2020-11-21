@@ -25,7 +25,6 @@ double generate_rand_num(double min, double max) {
 // Pseudo randomly generate the stock price for the specified day.
 void calculate_next_price(Stock* stock, double dpMonth, int dayNum) {
 
-    stock->prices = realloc(stock->prices, sizeof(double) * (dayNum + 1));
     // random number between 8 & -8 with avg of 8% per year
     double randomPercentChange = generate_rand_num(-8, 8);
     // New price multiple is random plus the average daily change over the last month
@@ -46,25 +45,24 @@ double get_price_change(Stock stock, int currDayNum, int numOfDays) {
 }
 
 // Runs the simulation of the stock for the specified number of months.
-void simulate_stock_price(Stock* stock, int numOfMonths) {
-    int numOfDays = numOfMonths * 365 / 12;  
+void simulate_stock_price(Stock* stock, int numOfMonths, int dayNum) { 
 
-    int startingStockPrice = 100;
-    stock->prices = malloc(sizeof(double));
-    stock->prices[0] = startingStockPrice;
-    
-    for (int dayNum = 1; dayNum < numOfDays; ++dayNum) {
-	double dpMonth = get_price_change(*stock, dayNum, 30);
-	printf("dpM: %f\n", dpMonth);
-	calculate_next_price(stock, dpMonth, dayNum);	
-    }
+    double dpMonth = get_price_change(*stock, dayNum, 30);
+    printf("dpM: %f\n", dpMonth);
+    calculate_next_price(stock, dpMonth, dayNum);	 
 }
 
 // Runs the simulation of the stock and handles all of the accounts.
 // Will run in its own thread eventually.
 void* run_simulation(Args args) {
+    int numDays = args.numMonths * 365 / 12;
     Stock stock;
-    simulate_stock_price(&stock, args.numMonths);
+    stock.prices = malloc(sizeof(double) * numDays);
+    stock.prices[0] = args.initialStockPrice;
+
+    for (int dayNum = 1; dayNum < numDays; ++dayNum) {
+        simulate_stock_price(&stock, args.numMonths, dayNum);
+    }
 
     return (void*)(0);
 }
@@ -106,7 +104,7 @@ double str_to_double(char* rawDoubleArg) {
     char* superfluous = ""; 
     
     resultDouble = strtod(rawDoubleArg, &superfluous);
-    if (!rawDoubleArg || !strcmp(superfluous, "")) {
+    if (!rawDoubleArg || strcmp(superfluous, "")) {
 	return -1.0;
     }
     return resultDouble;
@@ -131,7 +129,7 @@ int str_to_int(char* rawIntArg) {
     char* superfluous = ""; 
     
     resultInt = strtol(rawIntArg, &superfluous, 10);
-    if (!rawIntArg || !strcmp(superfluous, "")) {
+    if (!rawIntArg || strcmp(superfluous, "")) {
 	return -1;
     }
     return resultInt;
