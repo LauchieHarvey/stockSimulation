@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #include <time.h>
 #include "main.h"
 
@@ -63,7 +64,7 @@ void simulate_stock_price(Stock* stock, int numOfMonths) {
 // Will run in its own thread eventually.
 void* run_simulation(Args args) {
     Stock stock;
-    simulate_stock_price(&stock, 1);
+    simulate_stock_price(&stock, args.numMonths);
 
     return (void*)(0);
 }
@@ -83,9 +84,57 @@ void parse_args(Args* args, int argc, char** argv) {
 	usage_err();
     }
     // Convert argv[1] to StrategyFn and store in args->strategyFn
+    args->strategyFn = str_to_stratFn(argv[1]);
     // Convert argv[2] to int and store in args->numMonths
+    args->numMonths = str_to_int(argv[2]);
+    if (args->numMonths < 0) {
+	fprintf(stderr, "The number of months must be a positive integer.\n");
+	exit(3);
+    }
     // Convert argv[3] to double and store in args->initialStockPrice
+    args->initialStockPrice = str_to_double(argv[3]);    
+    if (args->initialStockPrice < 0) { 
+	fprintf(stderr, "The initial stock price must be a positive number.\n");
+	exit(4);
+    }
+}
 
+// Converts a string to a double. Returns -1.0 if there is an
+// error parsing the string.
+double str_to_double(char* rawDoubleArg) {
+    double resultDouble;
+    char* superfluous = ""; 
+    
+    resultDouble = strtod(rawDoubleArg, &superfluous);
+    if (!rawDoubleArg || !strcmp(superfluous, "")) {
+	return -1.0;
+    }
+    return resultDouble;
+}
+
+// Convert the command line argument integer to the corresponding 
+// buy/sell strategy function pointer.
+StrategyFn str_to_stratFn(char* rawStrategyArg) {
+    if (!strcmp(rawStrategyArg, "0")) {
+	return buy_and_hold;
+    } else if (!strcmp(rawStrategyArg, "1")) {
+	return dollar_cost_avg;
+    }	
+    fprintf(stderr, "Invalid buy/sell strategy number provided.\n");
+    fprintf(stderr, "strategy:\n    0 = buy and hold\n    1 = dollar cost avg\n");
+    exit(2);
+}
+
+// Returns -1 if there was an error reading the string as an integer.
+int str_to_int(char* rawIntArg) {
+    int resultInt;
+    char* superfluous = ""; 
+    
+    resultInt = strtol(rawIntArg, &superfluous, 10);
+    if (!rawIntArg || !strcmp(superfluous, "")) {
+	return -1;
+    }
+    return resultInt;
 }
 
 int main(int argc, char** argv) {

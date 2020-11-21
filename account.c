@@ -41,3 +41,13 @@ int exchange_stocks(Account* account, double stockPrice, int numStocks) {
     account->numStocksHeld += numStocks;
     return returnVal;
 }
+
+// StrategyFn function for the buy and hold strategy
+void buy_and_hold(Account* account, Stock* stock) {
+   return; 
+}
+
+// StrategyFn function for the dollar cost average strategy 
+void dollar_cost_avg(Account* account, Stock* stock) {
+   return; 
+} 

@@ -44,4 +44,16 @@ void new_account(Account* account, int initialNumStocks,
 // Buy or sell stocks. If buy, the num of stocks is +ve, -ve if selling.
 int exchange_stocks(Account* account, double stockPrice, int numStocks);
 
+void buy_and_hold(Account* account, Stock* stock);
+
+void dollar_cost_avg(Account* account, Stock* stock);
+
+// Command Line Argument parsing functions. 
+
+StrategyFn str_to_stratFn(char* arg);
+
+double str_to_double(char* arg);
+
+int str_to_int(char* arg);
+
 #endif
