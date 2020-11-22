@@ -12,9 +12,12 @@ main.o: main.c main.h
 account.o: account.c
 	$(CC) $(CFLAGS) account.c -c
 
+stack.o: stack.c stack.h
+	$(CC) $(CFLAGS) stack.c -c
 
-main: main.o account.o
-	$(CC) $(CFLAGS) main.o account.o -o runSim $(LINKS)
+
+main: main.o account.o stack.o
+	$(CC) $(CFLAGS) main.o account.o stack.o -o runSim $(LINKS)
 
 clean:
 	rm runSim *.o 
