@@ -5,14 +5,6 @@
 #include <math.h>
 #include "main.h"
 
-// Instantiate a new account.
-void new_account(Account* account, int initialNumStocks,
-	double initialCashValue) {
-    
-    account->cashValue = initialNumStocks;
-    account->numStocksHeld = initialNumStocks;
-}
-
 // Buy or sell stocks. If buy, the num of stocks is +ve, -ve if selling.
 // Returns: 0 on success,
 //          1 on not enough cash to buy requested numStocks.
@@ -43,11 +35,13 @@ int exchange_stocks(Account* account, double stockPrice, int numStocks) {
 }
 
 // StrategyFn function for the buy and hold strategy
-void buy_and_hold(Account* account, Stock* stock) {
-   return; 
+// Buy as many stocks as possible, as soon as possible.
+void buy_and_hold(Account* account, double stockPrice) {
+    int maxNumStocks = (int)floor(account->cashValue / stockPrice);
+    exchange_stocks(account, stockPrice, maxNumStocks); 
 }
 
 // StrategyFn function for the dollar cost average strategy 
-void dollar_cost_avg(Account* account, Stock* stock) {
+void dollar_cost_avg(Account* account, double stockPrice) {
    return; 
 } 

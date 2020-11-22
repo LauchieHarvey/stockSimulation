@@ -60,7 +60,13 @@ void* run_simulation(Args args) {
     stock.prices = malloc(sizeof(double) * numDays);
     stock.prices[0] = args.initialStockPrice;
 
+    Account account;
+    account.cashValue = args.initialCashValue;
+
     for (int dayNum = 1; dayNum < numDays; ++dayNum) {
+	// The account decides how much to buy, sell and hold.
+	args.strategyFn(&account, stock.prices[dayNum - 1]);
+	// Update the stock price for the next day.
         simulate_stock_price(&stock, args.numMonths, dayNum);
     }
 
@@ -69,16 +75,18 @@ void* run_simulation(Args args) {
 
 // Error that handles incorrect usage of the programme.
 void usage_err() {
-    fprintf(stderr, "Usage: ./runSim strategy numMonths initialStockPrice\n");
+    fprintf(stderr, "Usage: ./runSim strategy numMonths initialStockPrice \
+	    initialCashValue\n");
     fprintf(stderr, "strategy:\n    0 = buy and hold\n    1 = dollar cost avg\n");
     fprintf(stderr, "numMonths: int > 0\n");
     fprintf(stderr, "initialStockPrice: double > 0\n");
+    fprintf(stderr, "initialCashValue: double > 0\n");
     exit(1);
 }
 
 // Exits with appropriate error message if there is invalid command line args.
 void parse_args(Args* args, int argc, char** argv) {
-    if (argc != 4) {
+    if (argc != 5) {
 	usage_err();
     }
     // Convert argv[1] to StrategyFn and store in args->strategyFn
@@ -94,6 +102,12 @@ void parse_args(Args* args, int argc, char** argv) {
     if (args->initialStockPrice < 0) { 
 	fprintf(stderr, "The initial stock price must be a positive number.\n");
 	exit(4);
+    }
+    // Convert argv[4] to double and store in args->initialCashValue
+    args->initialCashValue = str_to_double(argv[3]);    
+    if (args->initialCashValue < 0) { 
+	fprintf(stderr, "The initial cash value must be a positive number.\n");
+	exit(5);
     }
 }
 
@@ -144,5 +158,5 @@ int main(int argc, char** argv) {
     parse_args(&args, argc, argv);
     run_simulation(args);
 
-    return 0;
+   return 0;
 }
