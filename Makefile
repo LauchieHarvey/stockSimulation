@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -pedantic -std=gnu99
-LINKS = -lm
+LINKS = -lm -lpthread
 .PHONY = clean all
 .DEFAULT_OPTION = all 
 

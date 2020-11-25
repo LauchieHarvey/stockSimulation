@@ -1,6 +1,8 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+#include "stack.h"
+
 typedef struct Stock {
     // An array of daily stock prices.
     double* prices;
@@ -31,13 +33,15 @@ typedef struct Args {
     double initialStockPrice;
     // The initial amount of cash that the account holds.
     double initialCashValue;
+    // The stack that contains all of the total account values after each sim
+    Stack* stack;
 
 } Args;
 
 // FUNCTION DEFS =============================================================
 
 // Threaded function to run the simulation
-void* run_simulation(Args args);
+void* run_simulation(void* voidArgs);
 
 // Instantiate an account struct.
 void new_account(Account* account, int initialNumStocks,

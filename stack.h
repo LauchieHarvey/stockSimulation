@@ -8,7 +8,7 @@ typedef struct Stack {
     int length;
     int elementSize;
     double* elements;
-    pthread_mutex_t mutex;
+    pthread_mutex_t lock;
 } Stack;
 
 void push(Stack* stack, double element);
