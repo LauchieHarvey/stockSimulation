@@ -44,8 +44,7 @@ typedef struct Args {
 void* run_simulation(void* voidArgs);
 
 // Instantiate an account struct.
-void new_account(Account* account, int initialNumStocks,
-	double initialCashValue);
+Account* new_account(double initialCashVal);
 
 // Buy or sell stocks. If buy, the num of stocks is +ve, -ve if selling.
 int exchange_stocks(Account* account, double stockPrice, int numStocks);

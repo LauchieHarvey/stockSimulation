@@ -5,12 +5,12 @@
 #include "stack.h"
 
 // Initialise the stack variable
-Stack new_stack() {
-    Stack stack; 
-    stack.length = 0;
-    stack.averageValue = 0;
-    stack.elements = malloc(sizeof(double));
-    pthread_mutex_init(&stack.lock, NULL);
+Stack* new_stack() {
+    Stack* stack = malloc(sizeof(Stack));
+    stack->length = 0;
+    stack->averageValue = 0;
+    stack->elements = malloc(sizeof(double));
+    pthread_mutex_init(&stack->lock, NULL);
     return stack;
 }
 
@@ -24,7 +24,7 @@ void push(Stack* stack, double element) {
     fflush(stdout);
 
     stack->length += 1;
-    stack = realloc(stack->elements, sizeof(double) * stack->length);
+    stack->elements = realloc(stack->elements, sizeof(double) * stack->length);
     stack->elements[stack->length - 1] = element;    
 
     // update the stack average
@@ -59,4 +59,9 @@ double pop(Stack* stack) {
     pthread_mutex_unlock(&stack->lock);
     
     return stack->elements[stack->length - 1];
+}
+
+// Releases memory formerly reserved for the stack back to the heap.
+void free_stack(Stack* stack) {
+    return;
 }

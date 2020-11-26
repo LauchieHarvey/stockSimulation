@@ -54,28 +54,27 @@ void simulate_stock_price(Stock* stock, int numOfMonths, int dayNum) {
 // Runs the simulation of the stock and handles all of the accounts.
 // Will run in its own thread eventually.
 void* run_simulation(void* voidArgs) {
-    Args args = *(Args*)voidArgs;
-    int numDays = args.numMonths * 365 / 12;
+    Args* args = (Args*)voidArgs;
+    int numDays = args->numMonths * 365 / 12;
     Stock stock;
     stock.prices = malloc(sizeof(double) * numDays);
-    stock.prices[0] = args.initialStockPrice;
+    stock.prices[0] = args->initialStockPrice;
 
-    Account account;
-    account.cashValue = args.initialCashValue;
+    Account* account = new_account(args->initialCashValue);
     printf("Num of Days: %i\n", numDays);
     fflush(stdout);
 
     for (int dayNum = 1; dayNum < numDays; ++dayNum) {
 	// The account decides how much to buy, sell and hold.
-	args.strategyFn(&account, stock.prices[dayNum - 1]);
+	args->strategyFn(account, stock.prices[dayNum - 1]);
 	// Update the stock price for the next day.
-        simulate_stock_price(&stock, args.numMonths, dayNum);
+        simulate_stock_price(&stock, args->numMonths, dayNum);
     }
 
-    double totalAccountValue = account.cashValue + 
-	account.numStocksHeld * stock.prices[numDays - 1];
+    double totalAccountValue = account->cashValue + 
+	account->numStocksHeld * stock.prices[numDays - 1];
 
-    push(args.stack, totalAccountValue);
+    push(args->stack, totalAccountValue);
     printf("totAccVal: %f", totalAccountValue);
     printf("In its own thread.\n");
     fflush(stdout);
@@ -114,7 +113,7 @@ void parse_args(Args* args, int argc, char** argv) {
 	exit(4);
     }
     // Convert argv[4] to double and store in args->initialCashValue
-    args->initialCashValue = str_to_double(argv[3]);    
+    args->initialCashValue = str_to_double(argv[4]);    
     if (args->initialCashValue < 0) { 
 	fprintf(stderr, "The initial cash value must be a positive number.\n");
 	exit(5);
@@ -164,20 +163,20 @@ int main(int argc, char** argv) {
     // Set pseudo-random seed
     srand(time(NULL));
 
-    Args args;
-    parse_args(&args, argc, argv);
-    Stack stack = new_stack();
-    args.stack = &stack;
+    Args* args = malloc(sizeof(Args));
+    parse_args(args, argc, argv);
+    Stack* stack = new_stack();
+    args->stack = stack;
     pthread_t tids[10];
 
     for (int i = 0; i < 1; i++) {	
-	pthread_create(&tids[i], NULL, run_simulation, (void*)&args);
+	pthread_create(&tids[i], NULL, run_simulation, (void*)args);
     }
     for (int i = 0; i < 1; i++) {
 	if (pthread_join(tids[i], NULL)) {
 	    fprintf(stderr, "Error joining thread\n");
 	}
     }
-    printf("Stack average: %f\n", args.stack->averageValue);
+    printf("Stack average: %f\n", args->stack->averageValue);
     return 0;
 }
