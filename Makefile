@@ -1,10 +1,13 @@
 CC = gcc
 CFLAGS = -Wall -pedantic -std=gnu99
 LINKS = -lm -lpthread
-.PHONY = clean all
+.PHONY = clean all debug
 .DEFAULT_OPTION = all 
 
 all: main
+
+debug: CFLAGS += -g
+debug: main
 
 main.o: main.c main.h
 	$(CC) $(CFLAGS) main.c -c
