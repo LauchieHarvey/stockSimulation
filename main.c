@@ -7,6 +7,8 @@
 #include <pthread.h>
 #include "main.h"
 
+const unsigned int NUM_OF_THREADS = 5;
+
 // Generates pseudo random int between the specified bounds skewed towards lower
 // numbers to reduce volatility
 double generate_rand_num(double min, double max) {
@@ -146,6 +148,11 @@ StrategyFn str_to_stratFn(char* rawStrategyArg) {
     exit(2);
 }
 
+// Calculates the performance of the stock in total on average.
+double calculate_performance(double startValue, double finalAverage) {
+    return startValue / finalAverage * 100;
+}
+
 // Returns -1 if there was an error reading the string as an integer.
 int str_to_int(char* rawIntArg) {
     int resultInt;
@@ -158,6 +165,16 @@ int str_to_int(char* rawIntArg) {
     return resultInt;
 }
 
+// Displays the average performance of the accounts to stdout.
+void show_results(double startingValue, double avgClosingValue) {
+    double percentPerformance = calculate_performance(startingValue,
+	    avgClosingValue);
+    printf("The simulation has been run.\n");
+    printf("Percent return: %f%%\n", percentPerformance);
+    printf("Starting value: $%f\n", startingValue);
+    printf("Average closing value: $%f\n", avgClosingValue);
+}
+
 int main(int argc, char** argv) {
 
     // Set pseudo-random seed
@@ -167,16 +184,16 @@ int main(int argc, char** argv) {
     parse_args(args, argc, argv);
     Stack* stack = new_stack();
     args->stack = stack;
-    pthread_t tids[10];
+    pthread_t tids[NUM_OF_THREADS];
 
-    for (int i = 0; i < 1; i++) {	
+    for (int i = 0; i < NUM_OF_THREADS; i++) {	
 	pthread_create(&tids[i], NULL, run_simulation, (void*)args);
     }
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < NUM_OF_THREADS; i++) {
 	if (pthread_join(tids[i], NULL)) {
 	    fprintf(stderr, "Error joining thread\n");
 	}
     }
-    printf("Stack average: %f\n", args->stack->averageValue);
+    show_results(args->initialCashValue, args->stack->averageValue);
     return 0;
 }
