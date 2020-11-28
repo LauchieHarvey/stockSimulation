@@ -58,5 +58,6 @@ void dollar_cost_avg(Account* account, double stockPrice) {
 
 // Releases memory reserved for the account struct back to heap
 void free_account(Account* account) {
+    free(account);
     return;
 }

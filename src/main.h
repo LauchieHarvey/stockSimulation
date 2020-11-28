@@ -53,6 +53,8 @@ void buy_and_hold(Account* account, double stockPrice);
 
 void dollar_cost_avg(Account* account, double stockPrice);
 
+void free_account(Account* account);
+
 // Command Line Argument parsing functions. 
 
 StrategyFn str_to_stratFn(char* arg);
