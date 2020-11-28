@@ -41,7 +41,7 @@ double pop(Stack* stack) {
     }
     double element = stack->elements[stack->length - 1];
     stack->length -= 1;
-    stack = realloc(stack->elements, sizeof(double) * stack->length);
+    stack->elements = realloc(stack->elements, sizeof(double) * stack->length);
 
     // Update average stack value 
     stack->averageValue *= (double)stack->length/(double)(stack->length - 1);
@@ -55,5 +55,10 @@ double pop(Stack* stack) {
 
 // Releases memory formerly reserved for the stack back to the heap.
 void free_stack(Stack* stack) {
+    for (int i = 0; i < stack->length; i++) {
+	pop(stack);
+    }
+    free(stack->elements);
+    free(stack);
     return;
 }
