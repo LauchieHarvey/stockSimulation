@@ -165,15 +165,36 @@ int str_to_int(char* rawIntArg) {
     return resultInt;
 }
 
+void set_print_colour(Colour colour) {
+    // Indexed by the Colour enum defined in main.h
+    const char* colours[3] = {
+	"[0;31m", // RED
+	"[0;32m", // GREEN
+	"[0m"     // DEFAULT
+    };
+    printf("\033%s", colours[colour]);
+}
+
 // Displays the average performance of the accounts to stdout.
 void show_results(double startingValue, double avgClosingValue) {
     double percentPerformance = calculate_performance(startingValue,
 	    avgClosingValue);
     printf("---- The simulation is complete ----\n");
     printf("Starting value:         $%.2f\n", startingValue);
-    printf("Average closing value:  $%.2f\n", avgClosingValue);
-    printf("Average return:         %.2f%%\n", percentPerformance);
-    printf("Average ROI:            %.2f%%\n", percentPerformance - 100);
+
+    printf("Average closing value:  ");
+    Colour colour = avgClosingValue > startingValue ? GREEN : RED;
+    set_print_colour(colour);
+    printf("$%.2f\n", avgClosingValue);
+    set_print_colour(DEFAULT);
+    printf("Average return:         ");
+    set_print_colour(colour);
+    printf("%.2f%%\n", percentPerformance);
+    set_print_colour(DEFAULT);
+    printf("Average ROI:            ");
+    set_print_colour(colour);
+    printf("%.2f%%\n", percentPerformance - 100);
+    set_print_colour(DEFAULT);
 }
 
 int main(int argc, char** argv) {

@@ -3,6 +3,10 @@
 
 #include "stack.h"
 
+typedef enum Colour {
+    RED, GREEN, DEFAULT
+} Colour;
+
 typedef struct Stock {
     // An array of daily stock prices.
     double* prices;
