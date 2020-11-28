@@ -168,9 +168,10 @@ void show_results(double startingValue, double avgClosingValue) {
     double percentPerformance = calculate_performance(startingValue,
 	    avgClosingValue);
     printf("---- The simulation is complete ----\n");
-    printf("Average return:         %f%%\n", percentPerformance);
-    printf("Starting value:         $%f\n", startingValue);
-    printf("Average closing value:  $%f\n", avgClosingValue);
+    printf("Starting value:         $%.2f\n", startingValue);
+    printf("Average closing value:  $%.2f\n", avgClosingValue);
+    printf("Average return:         %.2f%%\n", percentPerformance);
+    printf("Average ROI:            %.2f%%\n", percentPerformance - 100);
 }
 
 int main(int argc, char** argv) {
@@ -193,6 +194,5 @@ int main(int argc, char** argv) {
 	}
     }
     show_results(args->initialCashValue, args->stack->averageValue);
-    printf("%f\n", args->stack->averageValue);
     return 0;
 }

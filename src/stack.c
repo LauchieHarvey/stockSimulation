@@ -24,11 +24,8 @@ void push(Stack* stack, double element) {
     stack->elements[stack->length - 1] = element;    
 
     // update the stack average
-    stack->averageValue *= (stack->length - 1)/stack->length;
+    stack->averageValue *= (double)(stack->length - 1)/(double)stack->length;
     stack->averageValue += element/stack->length;
-
-    printf("newAvg: %f\n", stack->averageValue);
-    fflush(stdout);
 
     // Release mutex
     pthread_mutex_unlock(&stack->lock);
@@ -47,7 +44,7 @@ double pop(Stack* stack) {
     stack = realloc(stack->elements, sizeof(double) * stack->length);
 
     // Update average stack value 
-    stack->averageValue *= stack->length/(stack->length - 1);
+    stack->averageValue *= (double)stack->length/(double)(stack->length - 1);
     stack->averageValue -= element/(stack->length - 1);
 
     // Release the lock
