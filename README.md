@@ -12,5 +12,27 @@ dropped by a lot is more likely to drop further in price than a stock that
 has been stable or increasing. This allows the simulation to mimick the effect of 
 the stock market where it goes through periods of rallies and corrections (ups and downs). 
 
+## Getting Started
+### 1. Download the program and run it on your device.
+- Note that this will only run on a linux operating system. If you are using windows, you will need to run it through [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+- See the most recent version [here](https://github.com/LauchieHarvey/stockSimulation/releases)
+- Download the release version that suits you.
+### 2. Setting the programme up.
+- You will need to give the programme appropriate executable permissions for it to run. Once you have downloaded it, run the following command:
+`chmod +x runSim`
+### 3. Using the programme.
+- For usage information run the program without any command line arguments as such:
+`./runSim`
+This will display the necessary command line argument for the simulation to work.
+- The general format for running the programme is:
+`./runSim strategy numMonths initialStockPrice initialCashValue`
+
+#### Command line arguments:
+- `strategy` must be an integer (whole number)
+  - 0 = buy and hold and is currently the only available strategy.
+- `numMonths` must be an integer (whole number). If you want the simulation to run over a period of two years, then `numMonths` will be 24 (12 months/year x 2 years)
+- `initialStockPrice` must be a number above 0 (can be a decimal/double number)
+- `initialCashValue` is the amount of cash that the account starts with (positive number). It helps regulate buy and sell strategies to simulate an individual investor following the strategy.  
+  
 ### The code
 It is written in C. Runs the simulation concurrently with threading. Any contributions are much appreciated!
