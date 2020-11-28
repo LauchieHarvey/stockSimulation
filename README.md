@@ -14,8 +14,8 @@ the stock market where it goes through periods of rallies and corrections (ups a
 
 ## Getting Started
 ### 1. Download the program and run it on your device.
-- Note that this will only run on a linux operating system. If you are using windows, you will need to run it through [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10){:target="_blank"}.
-- See the most recent version [here](https://github.com/LauchieHarvey/stockSimulation/releases){:target="_blank"}
+- Note that this will only run on a linux operating system. If you are using windows, you will need to run it through [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+- See the most recent version [here](https://github.com/LauchieHarvey/stockSimulation/releases)
 - Click on 'Assets' to reveal the available downloads.
 - Download the programme by clicking on `runSim`.
 ### 2. Setting the programme up.
