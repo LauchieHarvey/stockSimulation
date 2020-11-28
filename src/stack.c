@@ -16,12 +16,8 @@ Stack* new_stack() {
 
 // O(1) push a new double onto the stack
 void push(Stack* stack, double element) {
-    printf("before mutex lock\n");
-    fflush(stdout);
     // Lock the stack
     pthread_mutex_lock(&stack->lock);
-    printf("after mutex lock\n");
-    fflush(stdout);
 
     stack->length += 1;
     stack->elements = realloc(stack->elements, sizeof(double) * stack->length);
@@ -31,12 +27,11 @@ void push(Stack* stack, double element) {
     stack->averageValue *= (stack->length - 1)/stack->length;
     stack->averageValue += element/stack->length;
 
-    printf("before mutex unlock\n");
+    printf("newAvg: %f\n", stack->averageValue);
     fflush(stdout);
+
     // Release mutex
     pthread_mutex_unlock(&stack->lock);
-    printf("after mutex unlock\n");
-    fflush(stdout);
 }
 
 // O(1) pop an element from the stack. returns -1 if there are no elements left.

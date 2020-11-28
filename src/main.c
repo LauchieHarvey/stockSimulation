@@ -63,8 +63,6 @@ void* run_simulation(void* voidArgs) {
     stock.prices[0] = args->initialStockPrice;
 
     Account* account = new_account(args->initialCashValue);
-    printf("Num of Days: %i\n", numDays);
-    fflush(stdout);
 
     for (int dayNum = 1; dayNum < numDays; ++dayNum) {
 	// The account decides how much to buy, sell and hold.
@@ -77,8 +75,7 @@ void* run_simulation(void* voidArgs) {
 	account->numStocksHeld * stock.prices[numDays - 1];
 
     push(args->stack, totalAccountValue);
-    printf("totAccVal: %f", totalAccountValue);
-    printf("In its own thread.\n");
+    printf("totAccVal: %f\n", totalAccountValue);
     fflush(stdout);
 
     return NULL;
@@ -145,12 +142,13 @@ StrategyFn str_to_stratFn(char* rawStrategyArg) {
     }	
     fprintf(stderr, "Invalid buy/sell strategy number provided.\n");
     fprintf(stderr, "strategy:\n    0 = buy and hold\n    1 = dollar cost avg\n");
+    fflush(stderr);
     exit(2);
 }
 
 // Calculates the performance of the stock in total on average.
 double calculate_performance(double startValue, double finalAverage) {
-    return startValue / finalAverage * 100;
+    return  finalAverage / startValue * 100;
 }
 
 // Returns -1 if there was an error reading the string as an integer.
@@ -169,10 +167,10 @@ int str_to_int(char* rawIntArg) {
 void show_results(double startingValue, double avgClosingValue) {
     double percentPerformance = calculate_performance(startingValue,
 	    avgClosingValue);
-    printf("The simulation has been run.\n");
-    printf("Percent return: %f%%\n", percentPerformance);
-    printf("Starting value: $%f\n", startingValue);
-    printf("Average closing value: $%f\n", avgClosingValue);
+    printf("---- The simulation is complete ----\n");
+    printf("Average return:         %f%%\n", percentPerformance);
+    printf("Starting value:         $%f\n", startingValue);
+    printf("Average closing value:  $%f\n", avgClosingValue);
 }
 
 int main(int argc, char** argv) {
@@ -195,5 +193,6 @@ int main(int argc, char** argv) {
 	}
     }
     show_results(args->initialCashValue, args->stack->averageValue);
+    printf("%f\n", args->stack->averageValue);
     return 0;
 }
