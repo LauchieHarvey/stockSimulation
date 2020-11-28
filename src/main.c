@@ -196,5 +196,6 @@ int main(int argc, char** argv) {
     }
     show_results(args->initialCashValue, args->stack->averageValue);
     free_stack(args->stack);
+    free(args);
     return 0;
 }
