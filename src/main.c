@@ -77,6 +77,7 @@ void* run_simulation(void* voidArgs) {
     push(args->stack, totalAccountValue);
     printf("totAccVal: %f\n", totalAccountValue);
     fflush(stdout);
+    free(stock.prices);
     free_account(account);
 
     return NULL;
