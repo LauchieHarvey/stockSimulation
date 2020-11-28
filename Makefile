@@ -23,4 +23,4 @@ main: main.o account.o stack.o
 	$(CC) $(CFLAGS) main.o account.o stack.o -o runSim $(LINKS)
 
 clean:
-	rm runSim *.o 
+	rm runSim stack.o account.o main.o 
