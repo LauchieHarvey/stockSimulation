@@ -84,7 +84,7 @@ void* run_simulation(void* voidArgs) {
 // Error that handles incorrect usage of the programme.
 void usage_err() {
     fprintf(stderr, "Usage: ./runSim strategy numMonths initialStockPrice \
-	    initialCashValue\n");
+initialCashValue\n");
     fprintf(stderr, "strategy:\n    0 = buy and hold\n    1 = dollar cost avg\n");
     fprintf(stderr, "numMonths: int > 0\n");
     fprintf(stderr, "initialStockPrice: double > 0\n");
