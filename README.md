@@ -1,8 +1,16 @@
-## Monte carlo simulation of stock price to determine optimal buy/sell strategies.
+# stockSimulation
 
+## What is it?
+This is a monte carlo simulation of stock prices and investment performance.  
+It has been created to help to determine optimal buy/sell investment strategies.
+
+## How it works
 ### The simulation of the stock price
-The change in the stock price will be determined as a function of its recent
-changes and pseudo-randomness. A stock thats price recently dropped by a lot 
-is more likely to drop further in price than a stock that has been stable or
-increasing. In this way, the price of the stock will exhibit an inertia like
-effect.
+The change in the stock price will be determined as a function of its recent 
+changes and pseudo-randomness (random numbers). A stock thats price recently 
+dropped by a lot is more likely to drop further in price than a stock that 
+has been stable or increasing. This allows the simulation to mimick the effect of 
+the stock market where it goes through periods of rallies and corrections (ups and downs). 
+
+### The code
+It is written in C. Runs the simulation concurrently with threading. Any contributions are much appreciated!
