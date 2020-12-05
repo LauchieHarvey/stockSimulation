@@ -30,7 +30,8 @@ This will display the necessary command line argument for the simulation to work
 
 #### Command line arguments:
 - `strategy` must be an integer (whole number)
-  - 0 = buy and hold and is currently the only available strategy.
+  - 0 = buy and hold. Buy as much as possible, as often as possible. 
+  - 1 = dollar cost average. Buy once a week until you run out of cash. 
 - `numMonths` must be an integer (whole number). If you want the simulation to run over a period of two years, then `numMonths` will be 24 (12 months/year x 2 years)
 - `initialStockPrice` must be a number above 0 (can be a decimal/double number)
 - `initialCashValue` is the amount of cash that the account starts with (positive number). It helps regulate buy and sell strategies to simulate an individual investor following the strategy.  
