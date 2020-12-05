@@ -5,8 +5,6 @@
 #include <string.h>
 #include <time.h>
 #include <pthread.h>
-#include <sys/syscall.h>
-#include <unistd.h>
 #include "main.h"
 
 const unsigned int NUM_OF_THREADS = 5;
