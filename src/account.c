@@ -2,6 +2,7 @@
 // including buying, selling and tracking its performance.
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <math.h>
 #include "main.h"
 
@@ -46,14 +47,20 @@ int exchange_stocks(Account* account, double stockPrice, int numStocks) {
 
 // StrategyFn function for the buy and hold strategy
 // Buy as many stocks as possible, as soon as possible.
-void buy_and_hold(Account* account, double stockPrice) {
+void buy_and_hold(Account* account, double stockPrice, int dayNum) {
     int maxNumStocks = (int)floor(account->cashValue / stockPrice);
     exchange_stocks(account, stockPrice, maxNumStocks); 
 }
 
 // StrategyFn function for the dollar cost average strategy 
-void dollar_cost_avg(Account* account, double stockPrice) {
-   return; 
+void dollar_cost_avg(Account* account, double stockPrice, int dayNum) {
+    // Will buy stocks once a week.
+    bool willBuy = (dayNum % 7) == 0;
+    int numStocks = (int)floor(account->cashValue / (4 * stockPrice)); 
+    if (willBuy) { 
+	exchange_stocks(account, stockPrice, numStocks);
+    } 
+    return; 
 } 
 
 // Releases memory reserved for the account struct back to heap

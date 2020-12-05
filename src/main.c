@@ -5,6 +5,8 @@
 #include <string.h>
 #include <time.h>
 #include <pthread.h>
+#include <sys/syscall.h>
+#include <unistd.h>
 #include "main.h"
 
 const unsigned int NUM_OF_THREADS = 5;
@@ -66,7 +68,7 @@ void* run_simulation(void* voidArgs) {
 
     for (int dayNum = 1; dayNum < numDays; ++dayNum) {
 	// The account decides how much to buy, sell and hold.
-	args->strategyFn(account, stock.prices[dayNum - 1]);
+	args->strategyFn(account, stock.prices[dayNum - 1], dayNum);
 	// Update the stock price for the next day.
         simulate_stock_price(&stock, args->numMonths, dayNum);
     }
@@ -75,8 +77,6 @@ void* run_simulation(void* voidArgs) {
 	account->numStocksHeld * stock.prices[numDays - 1];
 
     push(args->stack, totalAccountValue);
-    printf("totAccVal: %f\n", totalAccountValue);
-    fflush(stdout);
     free(stock.prices);
     free_account(account);
 

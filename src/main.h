@@ -25,7 +25,7 @@ typedef struct Account {
 
 
 // Function pointer definition for buy/sell strategies
-typedef void (*StrategyFn)(Account*, double stockPrice);
+typedef void (*StrategyFn)(Account*, double stockPrice, int dayNum);
 
 // The struct that hold the arguments given to the programme.
 typedef struct Args {
@@ -53,9 +53,9 @@ Account* new_account(double initialCashVal);
 // Buy or sell stocks. If buy, the num of stocks is +ve, -ve if selling.
 int exchange_stocks(Account* account, double stockPrice, int numStocks);
 
-void buy_and_hold(Account* account, double stockPrice);
+void buy_and_hold(Account* account, double stockPrice, int dayNum);
 
-void dollar_cost_avg(Account* account, double stockPrice);
+void dollar_cost_avg(Account* account, double stockPrice, int dayNum);
 
 void free_account(Account* account);
 
